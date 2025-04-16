@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        user: application
+        uid: 1000
+    container_name: currency-exchange-app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/app
+    networks:
+      - currency-network
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mysql:8
+    container_name: currency-exchange-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_DATABASE: ${DB_DATABASE:-api_currency_purchase}
+      MYSQL_USER: ${DB_USERNAME:-dev}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+        - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+        - currency-network
+
+  redis:
+    image: redis:alpine
+    container_name: currency-exchange-redis
+    restart: unless-stopped
+    networks:
+      - currency-network
+
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    ports:
+      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - currency-network
+
+networks:
+  currency-network:
+    driver: bridge
+
+volumes:
+  dbdata:
