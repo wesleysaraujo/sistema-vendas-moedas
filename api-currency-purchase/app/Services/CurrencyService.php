@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Log;
 class CurrencyService
 {
     /**
-     * Base URL for the currency API
+     * URL base para a API de moedas
      *
      * @var string
      */
     protected string $apiBaseUrl;
 
     /**
-     * Cache time for currency rates in minutes
+     * Tempo de cache para taxas de moeda em minutos
      *
      * @var int
      */
@@ -36,13 +36,12 @@ class CurrencyService
     }
 
     /**
-     * Get all available currencies
+     * Obtenha todas as moedas disponíveis
      *
      *return Collection
      */
     public function getAllCurrencies()
     {
-        // Check if currencies are cached
         if (Cache::has('currencies')) {
             return Cache::get('currencies');
         }
@@ -53,7 +52,7 @@ class CurrencyService
     }
 
     /**
-     * Get a specific currency by its code
+     * Obtenha uma moeda específica por seu código
      *
      * @param string $code
      * @return Currency|null
@@ -64,7 +63,7 @@ class CurrencyService
     }
 
     /**
-     * Fetch latest exchange rates from the API and update the database
+     * Busque as últimas taxas de câmbio da API e atualize o banco de dados
      *
      * @return bool
      */
@@ -94,13 +93,11 @@ class CurrencyService
                     continue;
                 }
 
-                // Parse the response
                 $key = "{$currency->code}BRL";
 
                 if ($response->successful()) {
                     $data = $response->json();
 
-                    // Update or create the currency
                     Currency::updateOrCreate(
                         ['code' => $currency->code],
                         [
@@ -112,7 +109,6 @@ class CurrencyService
                 }
             }
 
-            // Clear the cache
             Cache::forget('currencies');
 
             return true;
@@ -126,7 +122,7 @@ class CurrencyService
     }
 
     /**
-     * Get the latest exchange rate for a specific currency
+     * Obtenha a taxa de câmbio mais recente para uma moeda específica
      *
      * @param string $code
      * @return float|null

@@ -24,7 +24,7 @@
                   <tr v-for="currency in currencies" :key="currency.code" class="border-b border-gray-200 p-6 hover:bg-gray-100">
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ currency.code }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ currency.name }}</td>
-                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ parseFloat(currency.exchange_rate).toFixed(2) }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ parseFloat(currency.exchange_rate).toFixed(3) }}</td>
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <!-- Botão para comprar com link para Buy passando o parametro code -->
                         <NuxtLink :to="{ name: 'buy', query: { code: currency.code } }" class="bg-blue-500 text-white p-1 rounded hover:bg-blue-600">
