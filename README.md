@@ -3,6 +3,8 @@
 Um aplicativo web para compra de moedas estrangeiras usando moeda local, com aplicação de taxa de serviço e integração com API externa de cotação.
 A aplicação é composta por uma API escrita em Laravel 12 e um Fronend desenvolvido em Vuejs com Nuxt.
 
+Além das instruções abaixo, dentro de cada app tem seu próprio readme.
+
 ## Instalação da API
 
 1. Clone o repositório:

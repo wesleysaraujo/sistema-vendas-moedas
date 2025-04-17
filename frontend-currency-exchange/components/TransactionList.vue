@@ -56,7 +56,7 @@
               {{ transaction.metadata.currency_code }} - {{ transaction.metadata.currency_name }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ transaction.exchange_rate }}
+              {{ parseFloat(transaction.exchange_rate).toFixed(3) }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
               {{ formatCurrency(transaction.amount, 'BRL') }}

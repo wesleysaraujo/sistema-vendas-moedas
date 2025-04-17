@@ -17,8 +17,16 @@
               :placeholder="'Valor em ' + localCurrency"
             />
           </div>
+
+          <!-- Loading -->
+           <div v-if="loading">
+            <div class="flex justify-center items-center h-64">
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+           </div>
           
-          <div>
+          <div v-if="!loading">
+            <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Moeda estrangeira</label>
             <select 
               v-model="foreignCurrency"
@@ -45,6 +53,7 @@
             <span v-if="loading">Processando...</span>
             <span v-else>Confirmar Compra</span>
           </button>
+          </div>
         </div>
         
         <TransactionSummary
@@ -115,6 +124,7 @@ const transactionList = ref<InstanceType<typeof TransactionList> | null>(null)
 
 const config = useRuntimeConfig()
 const api = useApi()
+const route = useRoute()
 
 const loadCurrencies = async () => {
   loading.value = true
@@ -124,7 +134,7 @@ const loadCurrencies = async () => {
       throw apiError.value
     }
     availableCurrencies.value = data.value?.data || []
-    foreignCurrency.value = 'USD'
+    foreignCurrency.value = route.query.code ?? 'USD'
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to load currencies'
   } finally {
@@ -147,7 +157,7 @@ const summaryItems = computed(() => [
   },
   {
     label: 'Taxa de câmbio',
-    value: `1 ${foreignCurrency.value} = ${currentRate.value} ${localCurrency.value}`
+    value: `1 ${foreignCurrency.value} = ${parseFloat(currentRate.value).toFixed(2)} ${localCurrency.value}`
   }
 ])
 
