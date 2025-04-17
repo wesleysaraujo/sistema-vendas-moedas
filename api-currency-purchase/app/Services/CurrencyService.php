@@ -154,7 +154,6 @@ class CurrencyService
 
                 $currency = $this->getCurrencyByCode($code);
                 return $currency ? $currency->exchange_rate : null;
-
             } catch (ConnectionException $e) {
                 Log::error('Erro de conexão ao buscar taxa de câmbio', [
                     'currency' => $code,
